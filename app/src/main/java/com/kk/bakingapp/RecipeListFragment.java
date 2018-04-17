@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kk.bakingapp.dummy.DummyContent;
@@ -51,7 +52,7 @@ public class RecipeListFragment extends Fragment {
     }
 
     public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.RecipeViewHolder> {
 
         private final RecipeListFragment mParentFragment;
         private final List<DummyContent.DummyItem> mValues;
@@ -86,17 +87,18 @@ public class RecipeListFragment extends Fragment {
             mTwoPane = twoPane;
         }
 
+        @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recipe_list_content, parent, false);
-            return new ViewHolder(view);
+            return new RecipeViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+        public void onBindViewHolder(@NonNull final RecipeViewHolder holder, int position) {
+            holder.mRecipeTextView.setText(String.format("%s. %s", mValues.get(position).id, mValues.get(position).content));
+            holder.mRecipeImageView.setImageResource(android.R.drawable.btn_plus);
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
@@ -107,14 +109,14 @@ public class RecipeListFragment extends Fragment {
             return mValues.size();
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView mIdView;
-            final TextView mContentView;
+        class RecipeViewHolder extends RecyclerView.ViewHolder {
+            final TextView mRecipeTextView;
+            final ImageView mRecipeImageView;
 
-            ViewHolder(View view) {
+            RecipeViewHolder(View view) {
                 super(view);
-                mIdView = view.findViewById(R.id.id_text);
-                mContentView = view.findViewById(R.id.content);
+                mRecipeTextView = view.findViewById(R.id.recipe_card_tv);
+                mRecipeImageView = view.findViewById(R.id.recipe_card_iv);
             }
         }
     }
