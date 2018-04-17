@@ -1,4 +1,4 @@
-package com.kk.bakingapp;
+package com.kk.bakingapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.kk.bakingapp.R;
 
 /**
  * An activity representing a single Recipe detail screen. This

@@ -1,4 +1,4 @@
-package com.kk.bakingapp;
+package com.kk.bakingapp.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.kk.bakingapp.R;
 import com.kk.bakingapp.dummy.DummyContent;
 
 /**

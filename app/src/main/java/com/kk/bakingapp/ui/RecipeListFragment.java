@@ -1,4 +1,4 @@
-package com.kk.bakingapp;
+package com.kk.bakingapp.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kk.bakingapp.R;
 import com.kk.bakingapp.dummy.DummyContent;
 
 import java.util.List;
