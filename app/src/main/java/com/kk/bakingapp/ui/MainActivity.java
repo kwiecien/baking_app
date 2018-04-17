@@ -11,9 +11,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.kk.bakingapp.R;
+import com.kk.bakingapp.data.Recipe;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d(MainActivity.class.getSimpleName(), response.toString()); // TODO handle response
+                        testGson(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -49,6 +53,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         queue.add(jsonObjectRequest);
+    }
+
+    private void testGson(JSONArray response) {
+        for (int i = 0; i < response.length(); i++) {
+            try {
+                new Gson().fromJson(response.get(i).toString(), Recipe.class);
+            } catch (JSONException e) {
+
+            }
+        }
     }
 
     private void setToolbar() {
