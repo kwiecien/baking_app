@@ -13,7 +13,7 @@ import com.kk.bakingapp.dummy.DummyContent;
 
 /**
  * A fragment representing a single Recipe detail screen.
- * This fragment is either contained in a {@link RecipeListActivity}
+ * This fragment is either contained in a {@link MainActivity}
  * in two-pane mode (on tablets) or a {@link RecipeDetailActivity}
  * on handsets.
  */
