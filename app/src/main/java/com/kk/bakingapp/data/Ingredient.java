@@ -2,14 +2,23 @@ package com.kk.bakingapp.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
+@Parcel
 class Ingredient {
-    private final double quantity;
-    private final Measure measure;
+    double quantity;
+    Measure measure;
     @SerializedName("ingredient")
-    private final String name;
+    String name;
+
+    public Ingredient() {
+        // Mandatory empty constructor
+    }
 
     public Ingredient(double quantity, Measure measure, String name) {
         this.quantity = quantity;

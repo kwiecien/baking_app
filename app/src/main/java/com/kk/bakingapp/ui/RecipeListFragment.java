@@ -23,10 +23,10 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.kk.bakingapp.R;
 import com.kk.bakingapp.data.Recipe;
-import com.kk.bakingapp.dummy.DummyContent;
 import com.kk.bakingapp.util.Jsons;
 
 import org.json.JSONArray;
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -105,10 +105,10 @@ public class RecipeListFragment extends Fragment {
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+                Recipe recipe = (Recipe) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, item.id);
+                    arguments.putParcelable(RecipeDetailFragment.ARG_RECIPE, Parcels.wrap(recipe));
                     RecipeDetailFragment fragment = new RecipeDetailFragment();
                     fragment.setArguments(arguments);
                     mParentFragment.getActivity().getSupportFragmentManager().beginTransaction()
@@ -117,8 +117,7 @@ public class RecipeListFragment extends Fragment {
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, RecipeDetailActivity.class);
-                    intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, item.id);
-
+                    intent.putExtra(RecipeDetailFragment.ARG_RECIPE, Parcels.wrap(recipe));
                     context.startActivity(intent);
                 }
             }
