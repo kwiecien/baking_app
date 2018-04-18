@@ -28,7 +28,7 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.kk.bakingapp.ui.MainActivity"
-        tools:listitem="@layout/recipe_list_content" />
+        tools:listitem="@layout/recipe_list_item" />
 
     <FrameLayout
         android:id="@+id/recipe_detail_container"

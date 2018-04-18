@@ -45,9 +45,6 @@ public class RecipeDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(ARG_RECIPE)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
             mRecipe = Parcels.unwrap(getArguments().getParcelable(ARG_RECIPE));
 
             Activity activity = getActivity();
@@ -63,7 +60,6 @@ public class RecipeDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
         if (mRecipe != null) {
             ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mRecipe.getIngredients().toString());
         }
