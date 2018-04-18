@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,8 +39,6 @@ public class RecipeListFragment extends Fragment {
 
     @BindView(R.id.recipe_list)
     RecyclerView mRecyclerView;
-    @BindView(R.id.fab)
-    FloatingActionButton mFab;
 
     public RecipeListFragment() {
         // Mandatory empty constructor
@@ -54,19 +50,8 @@ public class RecipeListFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
         ButterKnife.bind(this, rootView);
-        setOnClickListeners();
         fetchRecipes(RECIPES_URL);
         return rootView;
-    }
-
-    private void setOnClickListeners() {
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     private void fetchRecipes(String url) {
