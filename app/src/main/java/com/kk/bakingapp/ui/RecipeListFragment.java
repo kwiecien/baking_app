@@ -86,13 +86,13 @@ public class RecipeListFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
+                        Timber.e(error);
                     }
                 });
         queue.add(jsonObjectRequest);
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<Recipe> recipes) {
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView, @NonNull List<Recipe> recipes) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, recipes, false));
     }
 
