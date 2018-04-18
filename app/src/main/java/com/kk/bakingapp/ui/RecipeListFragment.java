@@ -142,10 +142,32 @@ public class RecipeListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull final RecipeViewHolder holder, int position) {
             holder.mRecipeTextView.setText(mRecipes.get(position).getName());
-            holder.mRecipeImageView.setImageResource(android.R.drawable.btn_plus);
+            setImageResource(holder, position);
 
             holder.itemView.setTag(mRecipes.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
+        }
+
+        private void setImageResource(@NonNull RecipeViewHolder holder, int position) {
+            int imageResource;
+            switch (position) {
+                case 0:
+                    imageResource = R.drawable.nutella_pie;
+                    break;
+                case 1:
+                    imageResource = R.drawable.brownies;
+                    break;
+                case 2:
+                    imageResource = R.drawable.yellow_cake;
+                    break;
+                case 3:
+                    imageResource = R.drawable.cheesecake;
+                    break;
+                default:
+                    imageResource = R.drawable.unknown;
+                    break;
+            }
+            holder.mRecipeImageView.setImageResource(imageResource);
         }
 
         @Override
