@@ -15,12 +15,34 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.kk.bakingapp.R;
+import com.kk.bakingapp.data.Recipe;
 import com.kk.bakingapp.dummy.DummyContent;
+import com.kk.bakingapp.util.Jsons;
+
+import org.json.JSONArray;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import timber.log.Timber;
+
 public class RecipeListFragment extends Fragment {
+
+
+    private static final String RECIPES_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
+
+    @BindView(R.id.recipe_list)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
 
     public RecipeListFragment() {
         // Mandatory empty constructor
@@ -31,32 +53,54 @@ public class RecipeListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
+        ButterKnife.bind(this, rootView);
+        setOnClickListeners();
+        fetchRecipes(RECIPES_URL);
+        return rootView;
+    }
 
-        FloatingActionButton fab = rootView.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+    private void setOnClickListeners() {
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
-
-        View recyclerView = rootView.findViewById(R.id.recipe_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
-
-        return rootView;
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, false));
+    private void fetchRecipes(String url) {
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Timber.d(response.toString());
+                        List<Recipe> recipes = Jsons.fromJsonArrayToObjects(response, Recipe.class);
+                        setupRecyclerView(mRecyclerView, recipes);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                    }
+                });
+        queue.add(jsonObjectRequest);
+    }
+
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<Recipe> recipes) {
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, recipes, false));
     }
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.RecipeViewHolder> {
 
         private final RecipeListFragment mParentFragment;
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<Recipe> mRecipes;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
@@ -81,9 +125,9 @@ public class RecipeListFragment extends Fragment {
         };
 
         SimpleItemRecyclerViewAdapter(RecipeListFragment parent,
-                                      List<DummyContent.DummyItem> items,
+                                      List<Recipe> items,
                                       boolean twoPane) {
-            mValues = items;
+            mRecipes = items;
             mParentFragment = parent;
             mTwoPane = twoPane;
         }
@@ -98,16 +142,16 @@ public class RecipeListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull final RecipeViewHolder holder, int position) {
-            holder.mRecipeTextView.setText(String.format("%s. %s", mValues.get(position).id, mValues.get(position).content));
+            holder.mRecipeTextView.setText(mRecipes.get(position).getName());
             holder.mRecipeImageView.setImageResource(android.R.drawable.btn_plus);
 
-            holder.itemView.setTag(mValues.get(position));
+            holder.itemView.setTag(mRecipes.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
         }
 
         @Override
         public int getItemCount() {
-            return mValues.size();
+            return mRecipes.size();
         }
 
         class RecipeViewHolder extends RecyclerView.ViewHolder {
