@@ -34,8 +34,10 @@ public class RecipeDetailFragment extends Fragment {
 
     public static final String ARG_RECIPE = "recipe";
 
+    @BindView(R.id.ingredients_rv)
+    RecyclerView mIngredientsRecyclerView;
     @BindView(R.id.steps_rv)
-    RecyclerView mRecyclerView;
+    RecyclerView mStepsRecyclerView;
 
     private Recipe mRecipe;
 
@@ -62,7 +64,8 @@ public class RecipeDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
         ButterKnife.bind(this, rootView);
         setupToolbar();
-        setupRecyclerView(mRecyclerView, mRecipe.getIngredients());
+        setupIngredientsRecyclerView(mIngredientsRecyclerView, mRecipe.getIngredients());
+        setupStepsRecyclerView(mStepsRecyclerView, mRecipe.getSteps());
         return rootView;
     }
 
@@ -75,18 +78,24 @@ public class RecipeDetailFragment extends Fragment {
         }
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<Ingredient> ingredients) {
+    private void setupIngredientsRecyclerView(@NonNull RecyclerView recyclerView, List<Ingredient> ingredients) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new StepRecyclerViewAdapter(this, ingredients, false));
+        recyclerView.setAdapter(new IngredientsRecyclerViewAdapter(this, ingredients, false));
     }
 
-    private class StepRecyclerViewAdapter extends RecyclerView.Adapter<StepRecyclerViewAdapter.StepViewHolder> {
+    private void setupStepsRecyclerView(RecyclerView recyclerView, List<Recipe.Step> steps) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(new StepsRecyclerViewAdapter(this, steps, false));
+    }
+
+    private class IngredientsRecyclerViewAdapter extends RecyclerView.Adapter<IngredientsRecyclerViewAdapter.IngredientViewHolder> {
         private final RecipeDetailFragment mRecipeDetailFragment;
         private final List<Ingredient> mIngredients;
         private final boolean mTwoPane;
 
-        StepRecyclerViewAdapter(RecipeDetailFragment recipeDetailFragment, List<Ingredient> ingredients, boolean twoPane) {
+        IngredientsRecyclerViewAdapter(RecipeDetailFragment recipeDetailFragment, List<Ingredient> ingredients, boolean twoPane) {
             mRecipeDetailFragment = recipeDetailFragment;
             mIngredients = ingredients;
             mTwoPane = twoPane;
@@ -94,14 +103,14 @@ public class RecipeDetailFragment extends Fragment {
 
         @NonNull
         @Override
-        public StepViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.ingredient_list_item, parent, false);
-            return new StepViewHolder(view);
+            return new IngredientViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull StepViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
             Ingredient ingredient = mIngredients.get(position);
             holder.mQuantityTextView.setText(String.valueOf(ingredient.getQuantity()));
             holder.mMeasureTextView.setText(String.valueOf(ingredient.getMeasure()));
@@ -113,16 +122,60 @@ public class RecipeDetailFragment extends Fragment {
             return mIngredients.size();
         }
 
-        class StepViewHolder extends RecyclerView.ViewHolder {
+        class IngredientViewHolder extends RecyclerView.ViewHolder {
             final TextView mQuantityTextView;
             final TextView mMeasureTextView;
             final TextView mNameTextView;
 
-            StepViewHolder(View itemView) {
+            IngredientViewHolder(View itemView) {
                 super(itemView);
                 mQuantityTextView = itemView.findViewById(R.id.ingredient_quantity_tv);
                 mMeasureTextView = itemView.findViewById(R.id.ingredient_measure_tv);
                 mNameTextView = itemView.findViewById(R.id.ingredient_name_tv);
+            }
+        }
+
+    }
+
+    private class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecyclerViewAdapter.StepViewHolder> {
+        private final RecipeDetailFragment mRecipeDetailFragment;
+        private final List<Recipe.Step> mSteps;
+        private final boolean mTwoPane;
+
+        StepsRecyclerViewAdapter(RecipeDetailFragment recipeDetailFragment, List<Recipe.Step> steps, boolean twoPane) {
+            mRecipeDetailFragment = recipeDetailFragment;
+            mSteps = steps;
+            mTwoPane = twoPane;
+        }
+
+        @NonNull
+        @Override
+        public StepViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.step_list_item, parent, false);
+            return new StepViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull StepViewHolder holder, int position) {
+            Recipe.Step step = mSteps.get(position);
+            holder.mShortDescription.setText(String.valueOf(step.getShortDescription()));
+            holder.mDescription.setText(String.valueOf(step.getDescription()));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mSteps.size();
+        }
+
+        class StepViewHolder extends RecyclerView.ViewHolder {
+            final TextView mShortDescription;
+            final TextView mDescription;
+
+            StepViewHolder(View itemView) {
+                super(itemView);
+                mShortDescription = itemView.findViewById(R.id.step_short_description_tv);
+                mDescription = itemView.findViewById(R.id.step_description_tv);
             }
         }
 
