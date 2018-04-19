@@ -21,6 +21,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.kk.bakingapp.R;
 import com.kk.bakingapp.data.Recipe;
+import com.kk.bakingapp.util.Drawables;
 import com.kk.bakingapp.util.Jsons;
 
 import org.json.JSONArray;
@@ -134,24 +135,7 @@ public class RecipeListFragment extends Fragment {
         }
 
         private void setImageResource(@NonNull RecipeViewHolder holder, int position) {
-            int imageResource;
-            switch (position) {
-                case 0:
-                    imageResource = R.drawable.nutella_pie;
-                    break;
-                case 1:
-                    imageResource = R.drawable.brownies;
-                    break;
-                case 2:
-                    imageResource = R.drawable.yellow_cake;
-                    break;
-                case 3:
-                    imageResource = R.drawable.cheesecake;
-                    break;
-                default:
-                    imageResource = R.drawable.unknown;
-                    break;
-            }
+            int imageResource = Drawables.getRecipeImageResource(position);
             holder.mRecipeImageView.setImageResource(imageResource);
         }
 
@@ -171,4 +155,5 @@ public class RecipeListFragment extends Fragment {
             }
         }
     }
+
 }

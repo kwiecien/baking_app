@@ -1,6 +1,5 @@
 package com.kk.bakingapp.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -10,11 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kk.bakingapp.R;
 import com.kk.bakingapp.data.Ingredient;
 import com.kk.bakingapp.data.Recipe;
+import com.kk.bakingapp.util.Drawables;
 
 import org.parceler.Parcels;
 
@@ -32,8 +33,10 @@ import butterknife.ButterKnife;
 public class RecipeDetailFragment extends Fragment {
 
     public static final String ARG_RECIPE = "recipe";
+
     @BindView(R.id.steps_rv)
     RecyclerView mRecyclerView;
+
     private Recipe mRecipe;
 
     /**
@@ -50,12 +53,6 @@ public class RecipeDetailFragment extends Fragment {
 
         if (getArguments().containsKey(ARG_RECIPE)) {
             mRecipe = Parcels.unwrap(getArguments().getParcelable(ARG_RECIPE));
-
-            Activity activity = getActivity();
-            CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle(mRecipe.getName());
-            }
         }
     }
 
@@ -64,8 +61,18 @@ public class RecipeDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
         ButterKnife.bind(this, rootView);
+        setupToolbar();
         setupRecyclerView(mRecyclerView, mRecipe.getIngredients());
         return rootView;
+    }
+
+    private void setupToolbar() {
+        CollapsingToolbarLayout appBarLayout = getActivity().findViewById(R.id.recipe_detail_toolbar_layout);
+        ImageView mToolbarImageView = getActivity().findViewById(R.id.recipe_toolbar_iv);
+        if (appBarLayout != null) {
+            appBarLayout.setTitle(mRecipe.getName());
+            mToolbarImageView.setImageResource(Drawables.getRecipeImageResource((int) mRecipe.getId() - 1));
+        }
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<Ingredient> ingredients) {
