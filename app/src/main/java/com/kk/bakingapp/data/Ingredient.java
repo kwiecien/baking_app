@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @Parcel
-class Ingredient {
+public class Ingredient {
     double quantity;
     Measure measure;
     @SerializedName("ingredient")

@@ -78,11 +78,11 @@ public class RecipeListFragment extends Fragment {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, @NonNull List<Recipe> recipes) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, recipes, false));
+        recyclerView.setAdapter(new RecipeRecyclerViewAdapter(this, recipes, false));
     }
 
-    public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.RecipeViewHolder> {
+    public static class RecipeRecyclerViewAdapter
+            extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.RecipeViewHolder> {
 
         private final RecipeListFragment mParentFragment;
         private final List<Recipe> mRecipes;
@@ -108,9 +108,9 @@ public class RecipeListFragment extends Fragment {
             }
         };
 
-        SimpleItemRecyclerViewAdapter(RecipeListFragment parent,
-                                      List<Recipe> items,
-                                      boolean twoPane) {
+        RecipeRecyclerViewAdapter(RecipeListFragment parent,
+                                  List<Recipe> items,
+                                  boolean twoPane) {
             mRecipes = items;
             mParentFragment = parent;
             mTwoPane = twoPane;
