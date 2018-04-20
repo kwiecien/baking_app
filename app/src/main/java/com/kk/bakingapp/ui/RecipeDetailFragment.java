@@ -1,5 +1,6 @@
 package com.kk.bakingapp.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -142,6 +143,16 @@ public class RecipeDetailFragment extends Fragment {
         private final RecipeDetailFragment mRecipeDetailFragment;
         private final List<Recipe.Step> mSteps;
         private final boolean mTwoPane;
+        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Recipe.Step step = (Recipe.Step) view.getTag();
+                Context context = view.getContext();
+                Intent intent = new Intent(context, RecipeStepActivity.class);
+                intent.putExtra(RecipeStepFragment.ARG_RECIPE_STEP, Parcels.wrap(step));
+                context.startActivity(intent);
+            }
+        };
 
         StepsRecyclerViewAdapter(RecipeDetailFragment recipeDetailFragment, List<Recipe.Step> steps, boolean twoPane) {
             mRecipeDetailFragment = recipeDetailFragment;
@@ -162,6 +173,8 @@ public class RecipeDetailFragment extends Fragment {
             Recipe.Step step = mSteps.get(position);
             holder.mShortDescriptionTextView.setText(String.valueOf(step.getShortDescription()));
             holder.mDescriptionTextView.setText(String.valueOf(step.getDescription()));
+            holder.itemView.setTag(mSteps.get(position));
+            holder.itemView.setOnClickListener(mOnClickListener);
         }
 
         @Override
@@ -177,11 +190,6 @@ public class RecipeDetailFragment extends Fragment {
                 super(itemView);
                 mShortDescriptionTextView = itemView.findViewById(R.id.step_short_description_tv);
                 mDescriptionTextView = itemView.findViewById(R.id.step_description_tv);
-                itemView.findViewById(R.id.step_list_item_ll).setOnClickListener(v -> {
-                            Intent intent = new Intent(getActivity(), RecipeStepActivity.class);
-                            startActivity(intent);
-                        }
-                );
             }
         }
 

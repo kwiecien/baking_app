@@ -7,19 +7,26 @@
     android:orientation="vertical">
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/simpleExoPlayerView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:id="@+id/simple_exo_player_view"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp" />
 
-    <TextView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/simpleExoPlayerView"
-        tools:text="Recipe step instructions\nDo this\nDo that" />
+        app:layout_constraintTop_toBottomOf="@+id/simple_exo_player_view">
+
+        <TextView
+            android:id="@+id/recipe_step_description_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            tools:text="Recipe step instructions\nDo this\nDo that" />
+
+    </android.support.v4.widget.NestedScrollView>
 
     <ImageButton
         android:id="@+id/imageButton"
