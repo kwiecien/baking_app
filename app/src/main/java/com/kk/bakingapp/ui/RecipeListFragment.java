@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.kk.bakingapp.R;
@@ -24,7 +22,6 @@ import com.kk.bakingapp.data.Recipe;
 import com.kk.bakingapp.util.Drawables;
 import com.kk.bakingapp.util.Jsons;
 
-import org.json.JSONArray;
 import org.parceler.Parcels;
 
 import java.util.List;
@@ -61,20 +58,11 @@ public class RecipeListFragment extends Fragment {
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Timber.d(response.toString());
-                        List<Recipe> recipes = Jsons.fromJsonArrayToObjects(response, Recipe.class);
-                        setupRecyclerView(mRecyclerView, recipes);
-                    }
+                response -> {
+                    List<Recipe> recipes = Jsons.fromJsonArrayToObjects(response, Recipe.class);
+                    setupRecyclerView(mRecyclerView, recipes);
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Timber.e(error);
-                    }
-                });
+                Timber::e);
         queue.add(jsonObjectRequest);
     }
 

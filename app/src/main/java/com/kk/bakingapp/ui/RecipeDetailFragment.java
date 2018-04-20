@@ -1,5 +1,6 @@
 package com.kk.bakingapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kk.bakingapp.R;
 import com.kk.bakingapp.data.Ingredient;
@@ -177,8 +177,10 @@ public class RecipeDetailFragment extends Fragment {
                 super(itemView);
                 mShortDescriptionTextView = itemView.findViewById(R.id.step_short_description_tv);
                 mDescriptionTextView = itemView.findViewById(R.id.step_description_tv);
-                itemView.findViewById(R.id.step_list_item_ll).setOnClickListener(v ->
-                        Toast.makeText(getActivity(), mShortDescriptionTextView.getText(), Toast.LENGTH_SHORT).show()
+                itemView.findViewById(R.id.step_list_item_ll).setOnClickListener(v -> {
+                            Intent intent = new Intent(getActivity(), RecipeStepActivity.class);
+                            startActivity(intent);
+                        }
                 );
             }
         }
