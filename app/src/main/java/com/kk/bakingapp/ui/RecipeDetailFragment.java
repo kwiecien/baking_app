@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kk.bakingapp.R;
 import com.kk.bakingapp.data.Ingredient;
@@ -61,7 +62,7 @@ public class RecipeDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
+        View rootView = inflater.inflate(R.layout.recipe_detail_fragment, container, false);
         ButterKnife.bind(this, rootView);
         setupToolbar();
         setupIngredientsRecyclerView(mIngredientsRecyclerView, mRecipe.getIngredients());
@@ -159,8 +160,8 @@ public class RecipeDetailFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull StepViewHolder holder, int position) {
             Recipe.Step step = mSteps.get(position);
-            holder.mShortDescription.setText(String.valueOf(step.getShortDescription()));
-            holder.mDescription.setText(String.valueOf(step.getDescription()));
+            holder.mShortDescriptionTextView.setText(String.valueOf(step.getShortDescription()));
+            holder.mDescriptionTextView.setText(String.valueOf(step.getDescription()));
         }
 
         @Override
@@ -169,13 +170,16 @@ public class RecipeDetailFragment extends Fragment {
         }
 
         class StepViewHolder extends RecyclerView.ViewHolder {
-            final TextView mShortDescription;
-            final TextView mDescription;
+            final TextView mShortDescriptionTextView;
+            final TextView mDescriptionTextView;
 
             StepViewHolder(View itemView) {
                 super(itemView);
-                mShortDescription = itemView.findViewById(R.id.step_short_description_tv);
-                mDescription = itemView.findViewById(R.id.step_description_tv);
+                mShortDescriptionTextView = itemView.findViewById(R.id.step_short_description_tv);
+                mDescriptionTextView = itemView.findViewById(R.id.step_description_tv);
+                itemView.findViewById(R.id.step_list_item_ll).setOnClickListener(v ->
+                        Toast.makeText(getActivity(), mShortDescriptionTextView.getText(), Toast.LENGTH_SHORT).show()
+                );
             }
         }
 
