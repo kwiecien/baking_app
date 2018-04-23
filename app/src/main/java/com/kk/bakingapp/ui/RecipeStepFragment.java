@@ -170,8 +170,11 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         // Method not supported
     }
 
-
+    /**
+     * Media Session Callbacks, where all external clients (e.g. Notifications) control the player.
+     */
     private class MediaSessionCallback extends MediaSessionCompat.Callback {
+
         @Override
         public void onPlay() {
             mExoPlayer.setPlayWhenReady(true);
