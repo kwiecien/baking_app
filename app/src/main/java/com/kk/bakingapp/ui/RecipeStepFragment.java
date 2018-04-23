@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -30,8 +31,11 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.kk.bakingapp.R;
 import com.kk.bakingapp.data.Recipe;
+import com.kk.bakingapp.util.Recipes;
 
 import org.parceler.Parcels;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,18 +43,24 @@ import butterknife.ButterKnife;
 public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListener {
 
     static final String ARG_RECIPE_STEP = "recipe_step";
+    static final String ARG_RECIPE_ID = "recipe_id";
     private static final String TAG = RecipeStepFragment.class.getSimpleName();
 
     @BindView(R.id.simple_exo_player_view)
     SimpleExoPlayerView mExoPlayerView;
     @BindView(R.id.recipe_step_description_tv)
     TextView mDescriptionTextView;
+    @BindView(R.id.next_step_bt)
+    ImageButton mNextStepButton;
+    @BindView(R.id.previous_step_bt)
+    ImageButton mPreviousStepButton;
 
     private SimpleExoPlayer mExoPlayer;
 
     private MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mPlaybackStateBuilder;
     private Recipe.Step mStep;
+    private List<Recipe.Step> mSteps;
 
     public RecipeStepFragment() {
         /*
@@ -64,7 +74,8 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         super.onCreate(savedInstanceState);
         if (getArguments().containsKey(ARG_RECIPE_STEP)) {
             mStep = Parcels.unwrap(getArguments().getParcelable(ARG_RECIPE_STEP));
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mStep.getShortDescription());
+            long recipeId = getArguments().getLong(ARG_RECIPE_ID);
+            mSteps = Recipes.getRecipes().get((int) recipeId - 1).getSteps();
         }
     }
 
@@ -73,19 +84,46 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_step, container, false);
         ButterKnife.bind(this, rootView);
-        setupTextViews();
-        setupExoPlayer();
+        setupViews(mStep);
+        setupExoPlayer(mStep);
+        setupListeners();
         return rootView;
     }
 
-    private void setupTextViews() {
-        mDescriptionTextView.setText(mStep.getDescription());
+    private void setupViews(Recipe.Step step) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(step.getShortDescription());
+        mDescriptionTextView.setText(step.getDescription());
+        mPreviousStepButton.setVisibility(View.VISIBLE);
+        mNextStepButton.setVisibility(View.VISIBLE);
+        if (step.getId() == 0) {
+            mPreviousStepButton.setVisibility(View.INVISIBLE);
+        }
+        if (step.getId() == mSteps.size() - 1) {
+            mNextStepButton.setVisibility(View.INVISIBLE);
+        }
     }
 
-    private void setupExoPlayer() {
+    private void setupListeners() {
+        mNextStepButton.setOnClickListener(view -> {
+            mStep = mSteps.get((int) mStep.getId() + 1);
+            refreshUi(mStep);
+        });
+        mPreviousStepButton.setOnClickListener(view -> {
+            mStep = mSteps.get((int) mStep.getId() - 1);
+            refreshUi(mStep);
+        });
+    }
+
+    private void refreshUi(Recipe.Step step) {
+        setupViews(step);
+        releaseExoPlayer();
+        setupExoPlayer(step);
+    }
+
+    private void setupExoPlayer(Recipe.Step step) {
         mExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource((getResources()), R.drawable.question_mark));
         initializeMediaSession();
-        initializeExoPlayer(Uri.parse(mStep.getVideoUrl()));
+        initializeExoPlayer(Uri.parse(step.getVideoUrl()));
     }
 
     private void initializeMediaSession() {

@@ -36,6 +36,7 @@ import butterknife.ButterKnife;
 public class RecipeDetailFragment extends Fragment {
 
     public static final String ARG_RECIPE = "recipe";
+    public static final String ARG_RECIPE_ID = "recipe_id";
 
     @BindView(R.id.ingredients_rv)
     RecyclerView mIngredientsRecyclerView;
@@ -157,6 +158,7 @@ public class RecipeDetailFragment extends Fragment {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, RecipeStepActivity.class);
                 intent.putExtra(RecipeStepFragment.ARG_RECIPE_STEP, Parcels.wrap(step));
+                intent.putExtra(RecipeStepFragment.ARG_RECIPE_ID, mRecipe.getId());
                 context.startActivity(intent);
             }
         };

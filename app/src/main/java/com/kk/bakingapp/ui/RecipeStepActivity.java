@@ -30,6 +30,7 @@ public class RecipeStepActivity extends AppCompatActivity {
         Bundle arguments = new Bundle();
         arguments.putParcelable(RecipeStepFragment.ARG_RECIPE_STEP,
                 getIntent().getParcelableExtra(RecipeStepFragment.ARG_RECIPE_STEP));
+        arguments.putLong(RecipeStepFragment.ARG_RECIPE_ID, getIntent().getLongExtra(RecipeStepFragment.ARG_RECIPE_ID, 0));
         recipeStepFragment.setArguments(arguments);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.recipe_step_container, recipeStepFragment)

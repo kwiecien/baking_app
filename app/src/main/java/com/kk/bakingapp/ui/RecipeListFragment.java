@@ -21,6 +21,7 @@ import com.kk.bakingapp.R;
 import com.kk.bakingapp.data.Recipe;
 import com.kk.bakingapp.util.Drawables;
 import com.kk.bakingapp.util.Jsons;
+import com.kk.bakingapp.util.Recipes;
 
 import org.parceler.Parcels;
 
@@ -60,6 +61,7 @@ public class RecipeListFragment extends Fragment {
                 null,
                 response -> {
                     List<Recipe> recipes = Jsons.fromJsonArrayToObjects(response, Recipe.class);
+                    Recipes.setRecipes(recipes);
                     setupRecyclerView(mRecyclerView, recipes);
                 },
                 Timber::e);
@@ -83,6 +85,7 @@ public class RecipeListFragment extends Fragment {
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
                     arguments.putParcelable(RecipeDetailFragment.ARG_RECIPE, Parcels.wrap(recipe));
+                    arguments.putLong(RecipeDetailFragment.ARG_RECIPE_ID, recipe.getId());
                     RecipeDetailFragment fragment = new RecipeDetailFragment();
                     fragment.setArguments(arguments);
                     mParentFragment.getActivity().getSupportFragmentManager().beginTransaction()
@@ -92,6 +95,7 @@ public class RecipeListFragment extends Fragment {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, RecipeDetailActivity.class);
                     intent.putExtra(RecipeDetailFragment.ARG_RECIPE, Parcels.wrap(recipe));
+                    intent.putExtra(RecipeDetailFragment.ARG_RECIPE_ID, recipe.getId());
                     context.startActivity(intent);
                 }
             }
