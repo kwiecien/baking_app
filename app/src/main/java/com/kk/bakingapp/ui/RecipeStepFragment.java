@@ -118,6 +118,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
                     new DefaultExtractorsFactory(), null, null); // TODO Handle wrong uri
             mExoPlayer.prepare(extractorMediaSource);
             mExoPlayer.setPlayWhenReady(true);
+            mExoPlayerView.hideController();
         }
     }
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -82,12 +83,18 @@ public class RecipeDetailFragment extends Fragment {
 
     private void setupIngredientsRecyclerView(@NonNull RecyclerView recyclerView, List<Ingredient> ingredients) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        DividerItemDecoration itemDecoration =
+                new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(new IngredientsRecyclerViewAdapter(this, ingredients, false));
     }
 
     private void setupStepsRecyclerView(RecyclerView recyclerView, List<Recipe.Step> steps) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        DividerItemDecoration itemDecoration =
+                new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.HORIZONTAL);
+        recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(new StepsRecyclerViewAdapter(this, steps, false));
     }

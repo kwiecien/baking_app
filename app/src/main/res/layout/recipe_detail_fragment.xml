@@ -3,32 +3,63 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="@dimen/standard_padding">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Ingredients"
-        android:textAllCaps="true"
-        android:textSize="32sp"
-        android:textStyle="bold" />
+        android:text="@string/ingredients"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/standard_padding">
+
+        <TextView
+            android:id="@+id/ingredient_quantity_title_tv"
+            android:layout_width="@dimen/quantity_width"
+            android:layout_height="match_parent"
+            android:gravity="end"
+            android:paddingEnd="@dimen/standard_padding"
+            android:text="@string/quantity"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+        <TextView
+            android:id="@+id/ingredient_measure_title_tv"
+            android:layout_width="@dimen/measure_width"
+            android:layout_height="match_parent"
+            android:text="@string/measure"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+        <TextView
+            android:id="@+id/ingredient_name_title_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:text="@string/ingredient"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ingredients_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="@dimen/standard_padding" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Steps"
-        android:textAllCaps="true"
-        android:textSize="32sp"
-        android:textStyle="bold" />
+        android:text="@string/steps"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/steps_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="@dimen/standard_padding" />
 
 </LinearLayout>
