@@ -16,7 +16,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="@dimen/standard_padding">
+        android:paddingEnd="@dimen/standard_padding"
+        android:paddingStart="@dimen/standard_padding"
+        android:paddingTop="@dimen/standard_padding">
 
         <TextView
             android:id="@+id/ingredient_quantity_title_tv"
