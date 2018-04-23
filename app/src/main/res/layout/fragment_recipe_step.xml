@@ -22,8 +22,9 @@
             android:id="@+id/recipe_step_description_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="@dimen/standard_padding"
+            android:layout_marginStart="@dimen/standard_padding"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             tools:text="Recipe step instructions\nDo this\nDo that" />
 
     </android.support.v4.widget.NestedScrollView>
