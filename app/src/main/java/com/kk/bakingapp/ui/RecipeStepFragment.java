@@ -72,7 +72,6 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     private PlaybackStateCompat.Builder mPlaybackStateBuilder;
     private Recipe.Step mStep;
     private List<Recipe.Step> mSteps;
-    private NotificationManager mNotificationManager;
 
     public RecipeStepFragment() {
         /*
@@ -172,7 +171,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
             DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getActivity(), userAgent);
             if (!mediaUri.toString().isEmpty()) {
                 ExtractorMediaSource extractorMediaSource = new ExtractorMediaSource(mediaUri, dataSourceFactory,
-                        new DefaultExtractorsFactory(), null, null); // TODO Handle wrong uri
+                        new DefaultExtractorsFactory(), null, null);
                 mExoPlayer.prepare(extractorMediaSource);
             }
             mExoPlayer.setPlayWhenReady(true);
@@ -227,10 +226,10 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         NotificationCompat.Action restartAction =
                 createAction(R.drawable.exo_controls_previous, "Restart", PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS);
         PendingIntent contentPendingIntent = createContentPendingIntent();
-        mNotificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-        createNotificationChannel(mNotificationManager);
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        createNotificationChannel(notificationManager);
         Notification notification = createNotification(playPauseAction, restartAction, contentPendingIntent);
-        mNotificationManager.notify(0, notification);
+        notificationManager.notify(0, notification);
     }
 
     int determinePlayPauseNotificationIcon(PlaybackStateCompat playbackState) {

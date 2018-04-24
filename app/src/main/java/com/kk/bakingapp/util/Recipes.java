@@ -8,6 +8,10 @@ public class Recipes {
 
     private static List<Recipe> mRecipes;
 
+    private Recipes() {
+        throw new AssertionError("Should not be initialized!");
+    }
+
     public static List<Recipe> getRecipes() {
         return mRecipes;
     }
