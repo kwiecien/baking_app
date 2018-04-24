@@ -70,6 +70,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     ImageButton mPreviousStepButton;
     private SimpleExoPlayer mExoPlayer;
     private PlaybackStateCompat.Builder mPlaybackStateBuilder;
+    private long mRecipeId;
     private Recipe.Step mStep;
     private List<Recipe.Step> mSteps;
 
@@ -85,8 +86,8 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         super.onCreate(savedInstanceState);
         if (getArguments().containsKey(ARG_RECIPE_STEP)) {
             mStep = Parcels.unwrap(getArguments().getParcelable(ARG_RECIPE_STEP));
-            long recipeId = getArguments().getLong(ARG_RECIPE_ID);
-            mSteps = Recipes.getRecipes().get((int) recipeId - 1).getSteps();
+            mRecipeId = getArguments().getLong(ARG_RECIPE_ID);
+            mSteps = Recipes.getRecipes().get((int) mRecipeId - 1).getSteps();
         }
     }
 
@@ -257,9 +258,12 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     }
 
     private PendingIntent createContentPendingIntent() {
+        Intent intent = new Intent(getActivity(), RecipeStepActivity.class);
+        intent.putExtra(RecipeStepFragment.ARG_RECIPE_STEP, Parcels.wrap(mStep));
+        intent.putExtra(RecipeStepFragment.ARG_RECIPE_ID, mRecipeId);
         return PendingIntent.getActivity(getActivity(),
                 0,
-                new Intent(getActivity(), RecipeStepActivity.class),
+                intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
