@@ -1,14 +1,20 @@
 package com.kk.bakingapp.ui;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -50,6 +56,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     static final String ARG_RECIPE_STEP = "recipe_step";
     static final String ARG_RECIPE_ID = "recipe_id";
     private static final String TAG = RecipeStepFragment.class.getSimpleName();
+    private static final String CHANNEL_ID = "123";
     private static MediaSessionCompat mMediaSession;
     @BindView(R.id.simple_exo_player_view)
     SimpleExoPlayerView mExoPlayerView;
@@ -65,6 +72,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     private PlaybackStateCompat.Builder mPlaybackStateBuilder;
     private Recipe.Step mStep;
     private List<Recipe.Step> mSteps;
+    private NotificationManager mNotificationManager;
 
     public RecipeStepFragment() {
         /*
@@ -208,7 +216,82 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
             mPlaybackStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED, mExoPlayer.getCurrentPosition(), 0.0f);
         }
         mMediaSession.setPlaybackState(mPlaybackStateBuilder.build());
-//        showNotification(mPlaybackStateBuilder.build()) // TODO
+        showNotification(mPlaybackStateBuilder.build());
+    }
+
+    private void showNotification(PlaybackStateCompat playbackState) {
+        int icon = determinePlayPauseNotificationIcon(playbackState);
+        String playPause = determinePlayPauseNotificationTitle(playbackState);
+        NotificationCompat.Action playPauseAction =
+                createAction(icon, playPause, PlaybackStateCompat.ACTION_PLAY_PAUSE);
+        NotificationCompat.Action restartAction =
+                createAction(R.drawable.exo_controls_previous, "Restart", PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS);
+        PendingIntent contentPendingIntent = createContentPendingIntent();
+        mNotificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        createNotificationChannel(mNotificationManager);
+        Notification notification = createNotification(playPauseAction, restartAction, contentPendingIntent);
+        mNotificationManager.notify(0, notification);
+    }
+
+    int determinePlayPauseNotificationIcon(PlaybackStateCompat playbackState) {
+        return playbackState.getState() == PlaybackStateCompat.STATE_PLAYING ?
+                R.drawable.exo_controls_pause :
+                R.drawable.exo_controls_play;
+    }
+
+    @NonNull
+    String determinePlayPauseNotificationTitle(PlaybackStateCompat playbackState) {
+        return playbackState.getState() == PlaybackStateCompat.STATE_PLAYING ?
+                getString(R.string.pause) :
+                getString(R.string.play);
+    }
+
+    @NonNull
+    private NotificationCompat.Action createAction(int icon, String title, long action) {
+        return new NotificationCompat.Action(
+                icon,
+                title,
+                MediaButtonReceiver.buildMediaButtonPendingIntent(
+                        getActivity(),
+                        action
+                ));
+    }
+
+    private PendingIntent createContentPendingIntent() {
+        return PendingIntent.getActivity(getActivity(),
+                0,
+                new Intent(getActivity(), RecipeStepActivity.class),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private Notification createNotification(NotificationCompat.Action playPauseAction,
+                                            NotificationCompat.Action restartAction,
+                                            PendingIntent contentPendingIntent) {
+        return new NotificationCompat.Builder(getActivity(), CHANNEL_ID)
+                .setContentTitle("Can you bake it?")
+                .setContentText("Press play to watch the instructions!")
+                .setContentIntent(contentPendingIntent)
+                .setSmallIcon(android.R.drawable.gallery_thumb)
+                .setVisibility(Notification.VISIBILITY_PUBLIC)
+                //.setAutoCancel(true)
+                .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
+                        .setMediaSession(mMediaSession.getSessionToken())
+                        .setShowActionsInCompactView(0, 1))
+                .addAction(playPauseAction)
+                .addAction(restartAction)
+                .build();
+    }
+
+    private void createNotificationChannel(NotificationManager notificationManager) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create the NotificationChannel, but only on API 26+ because
+            // the NotificationChannel class is new and not in the support library
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel notificationChannel =
+                    new NotificationChannel(CHANNEL_ID, getString(R.string.baking_channel_name), importance);
+            notificationChannel.setDescription(getString(R.string.baking_channel_description));
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
     }
 
     @Override

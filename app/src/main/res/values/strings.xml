@@ -8,4 +8,8 @@
     <string name="ingredient">Ingredient</string>
     <string name="steps">Steps</string>
     <string name="measure">Measure</string>
+    <string name="pause">Pause</string>
+    <string name="play">Play</string>
+    <string name="baking_channel_name" translatable="false">baking_notification_channel</string>
+    <string name="baking_channel_description" translatable="false">baking_notification_channel_description</string>
 </resources>
