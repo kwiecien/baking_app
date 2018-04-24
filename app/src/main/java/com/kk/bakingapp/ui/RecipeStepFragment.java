@@ -1,11 +1,15 @@
 package com.kk.bakingapp.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.ActionBar;
@@ -46,7 +50,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     static final String ARG_RECIPE_STEP = "recipe_step";
     static final String ARG_RECIPE_ID = "recipe_id";
     private static final String TAG = RecipeStepFragment.class.getSimpleName();
-
+    private static MediaSessionCompat mMediaSession;
     @BindView(R.id.simple_exo_player_view)
     SimpleExoPlayerView mExoPlayerView;
     @BindView(R.id.recipe_step_short_description_tv)
@@ -57,10 +61,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     ImageButton mNextStepButton;
     @BindView(R.id.previous_step_bt)
     ImageButton mPreviousStepButton;
-
     private SimpleExoPlayer mExoPlayer;
-
-    private MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mPlaybackStateBuilder;
     private Recipe.Step mStep;
     private List<Recipe.Step> mSteps;
@@ -221,6 +222,17 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     }
 
     /**
+     * Broadcast Receiver registered to receive the MEDIA_BUTTON intent coming from clients.
+     */
+    public static class MediaReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            MediaButtonReceiver.handleIntent(mMediaSession, intent);
+        }
+    }
+
+    /**
      * Media Session Callbacks, where all external clients (e.g. Notifications) control the player.
      */
     private class MediaSessionCallback extends MediaSessionCompat.Callback {
@@ -241,4 +253,5 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         }
 
     }
+
 }
