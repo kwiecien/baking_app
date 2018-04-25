@@ -12,6 +12,7 @@
     <string name="play">Play</string>
     <string name="baking_channel_name" translatable="false">baking_notification_channel</string>
     <string name="baking_channel_description" translatable="false">baking_notification_channel_description</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">Ingredient 1\nIngredient 2</string>
     <string name="add_widget">Add widget</string>
+    <string name="recipe_ingredients">Recipe ingredients</string>
 </resources>
