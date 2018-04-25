@@ -20,17 +20,30 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+        views.setTextViewText(R.id.widget_recipe_tv, widgetText);
 
-        // Create an Intent to launch Application
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
+        setLaunchApplicationPendingIntent(context, views);
+        setChangeRecipePendingIntent(context, views);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
+
+    private static void setLaunchApplicationPendingIntent(Context context, RemoteViews views) {
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
+    }
+
+    private static void setChangeRecipePendingIntent(Context context, RemoteViews views) {
+        Intent intent = new Intent(context, RecipeService.class);
+        intent.setAction(RecipeService.ACTION_CHANGE_RECIPE);
+        PendingIntent pendingIntent =
+                PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.widget_next_recipe_iv, pendingIntent);
+    }
+
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {

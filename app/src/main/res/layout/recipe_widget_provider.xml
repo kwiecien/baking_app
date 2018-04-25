@@ -7,7 +7,7 @@
     android:padding="@dimen/widget_margin">
 
     <TextView
-        android:id="@+id/appwidget_text"
+        android:id="@+id/widget_recipe_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -19,5 +19,14 @@
         android:textSize="24sp"
         android:textStyle="bold|italic"
         tools:text="Ingredient 1\nIngredient 2" />
+
+    <ImageView
+        android:id="@+id/widget_next_recipe_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:src="@android:drawable/ic_media_next" />
+
 
 </RelativeLayout>
