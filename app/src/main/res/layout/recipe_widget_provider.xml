@@ -1,10 +1,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/widget_layout"
+    android:id="@+id/widget_rl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#09C"
     android:padding="@dimen/widget_margin">
+
+    <TextView
+        android:id="@+id/widget_recipe_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/widget_recipe_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Recipe"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/widget_recipe_tv"
@@ -15,9 +28,10 @@
         android:layout_margin="8dp"
         android:background="#09C"
         android:contentDescription="@string/recipe_ingredients"
-        android:textColor="#ffffff"
-        android:textSize="24sp"
-        android:textStyle="bold|italic"
+        android:text="Ingredients"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
         tools:text="Ingredient 1\nIngredient 2" />
 
     <ImageView
@@ -26,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:src="@android:drawable/ic_media_next" />
+        android:src="@android:drawable/stat_notify_sync" />
 
 
 </RelativeLayout>

@@ -19,4 +19,5 @@ public class Recipes {
     public static void setRecipes(List<Recipe> recipes) {
         mRecipes = recipes;
     }
+
 }
