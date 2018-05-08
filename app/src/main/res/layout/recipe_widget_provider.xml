@@ -13,7 +13,7 @@
         android:layout_above="@id/widget_recipe_tv"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Recipe"
+        android:text="@string/refresh_to_see_a_new_recipe"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="@android:color/white"
         android:textSize="14sp"
@@ -28,18 +28,18 @@
         android:layout_margin="8dp"
         android:background="#09C"
         android:contentDescription="@string/recipe_ingredients"
-        android:text="Ingredients"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/white"
         android:textSize="12sp"
-        tools:text="Ingredient 1\nIngredient 2" />
+        tools:text="Ingredients" />
 
     <ImageView
         android:id="@+id/widget_next_recipe_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:contentDescription="@string/change_recipe"
         android:src="@android:drawable/stat_notify_sync" />
 
 

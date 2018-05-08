@@ -15,4 +15,6 @@
     <string name="appwidget_text">Ingredient 1\nIngredient 2</string>
     <string name="add_widget">Add widget</string>
     <string name="recipe_ingredients">Recipe ingredients</string>
+    <string name="refresh_to_see_a_new_recipe">Refresh to see a new recipe!</string>
+    <string name="change_recipe">Change recipe</string>
 </resources>
