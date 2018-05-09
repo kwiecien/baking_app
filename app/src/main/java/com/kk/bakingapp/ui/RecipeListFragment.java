@@ -19,6 +19,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.kk.bakingapp.R;
 import com.kk.bakingapp.data.Recipe;
+import com.kk.bakingapp.idle.SimpleIdlingResource;
 import com.kk.bakingapp.util.Drawables;
 import com.kk.bakingapp.util.Jsons;
 import com.kk.bakingapp.util.Recipes;
@@ -39,6 +40,9 @@ public class RecipeListFragment extends Fragment {
     @BindView(R.id.recipe_list_rv)
     RecyclerView mRecyclerView;
 
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
+
     public RecipeListFragment() {
         // Mandatory empty constructor
     }
@@ -49,11 +53,13 @@ public class RecipeListFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
         ButterKnife.bind(this, rootView);
-        fetchRecipes(RECIPES_URL);
+        fetchRecipes(RECIPES_URL, getIdlingResource());
         return rootView;
     }
 
-    private void fetchRecipes(String url) {
+    private void fetchRecipes(String url, @Nullable final SimpleIdlingResource idlingResource) {
+        setIdleState(idlingResource, false);
+
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -63,13 +69,27 @@ public class RecipeListFragment extends Fragment {
                     List<Recipe> recipes = Jsons.fromJsonArrayToObjects(response, Recipe.class);
                     Recipes.setRecipes(recipes);
                     setupRecyclerView(mRecyclerView, recipes);
+                    setIdleState(idlingResource, true);
                 },
                 Timber::e);
         queue.add(jsonObjectRequest);
     }
 
+    private void setIdleState(@Nullable SimpleIdlingResource idlingResource, boolean isIdleNow) {
+        if (idlingResource != null) {
+            idlingResource.setIdleState(isIdleNow);
+        }
+    }
+
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, @NonNull List<Recipe> recipes) {
         recyclerView.setAdapter(new RecipeRecyclerViewAdapter(this, recipes, false));
+    }
+
+    public SimpleIdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
     }
 
     public static class RecipeRecyclerViewAdapter
