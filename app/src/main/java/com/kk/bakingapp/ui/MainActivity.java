@@ -41,8 +41,10 @@ public class MainActivity extends AppCompatActivity
 
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            toolbar.setTitle(getTitle());
+        }
     }
 
     @Override

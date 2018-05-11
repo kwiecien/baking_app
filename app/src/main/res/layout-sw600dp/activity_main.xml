@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="recipe"
+            type="com.kk.bakingapp.data.Recipe" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:baselineAligned="false"
+        android:divider="?android:attr/dividerHorizontal"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        tools:context=".ui.MainActivity">
+
+        <!--
+        This layout is a two-pane layout for the Recipes
+        master/detail flow.
+        -->
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/recipe_list_fragment"
+            android:name="com.kk.bakingapp.ui.RecipeListFragment"
+            android:layout_width="200dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="@dimen/standard_padding">
+
+            <LinearLayout
+                android:id="@+id/recipe_detail_with_title_ll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/standard_padding"
+                    android:text="@{recipe.name}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    tools:text="Nutella Pie" />
+
+                <FrameLayout
+                    android:id="@+id/recipe_detail_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No recipe selected"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>
