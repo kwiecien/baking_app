@@ -3,6 +3,7 @@ package com.kk.bakingapp.ui;
 import android.support.annotation.Nullable;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingRegistry;
+import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
@@ -10,7 +11,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.kk.bakingapp.R;
-import com.kk.bakingapp.idle.SimpleIdlingResource;
 
 import org.junit.After;
 import org.junit.Before;
@@ -19,13 +19,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class RecipeListFragmentIdlingResourcesTest {
+public class MainActivityIdlingResourcesTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Nullable
-    private SimpleIdlingResource mIdlingResource;
+    private IdlingResource mIdlingResource;
 
     @Before
     public void registerIdlingResource() {

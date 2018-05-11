@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import org.parceler.Parcel;
 
 @Parcel
-enum Measure {
+public enum Measure {
     @SerializedName("CUP")
     CUP,
     @SerializedName("TBLSP")

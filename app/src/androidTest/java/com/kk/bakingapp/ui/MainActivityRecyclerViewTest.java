@@ -20,7 +20,7 @@ import static com.kk.bakingapp.util.CustomMatchers.CollapsingToolbarLayoutMatche
 import static com.kk.bakingapp.util.CustomMatchers.RecyclerViewMatcher.withRecyclerView;
 
 @RunWith(AndroidJUnit4.class)
-public class RecipeListFragmentRecyclerViewTest {
+public class MainActivityRecyclerViewTest {
 
     private static final String NUTELLA_PIE = "Nutella Pie";
     private static final String BROWNIES = "Brownies";
