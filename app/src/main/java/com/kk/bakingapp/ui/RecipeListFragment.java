@@ -34,8 +34,9 @@ import timber.log.Timber;
 
 public class RecipeListFragment extends Fragment {
 
-
     private static final String RECIPES_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
+
+    private static OnRecipeClickListener mCallback;
 
     @BindView(R.id.recipe_list_rv)
     RecyclerView mRecyclerView;
@@ -45,6 +46,24 @@ public class RecipeListFragment extends Fragment {
 
     public RecipeListFragment() {
         // Mandatory empty constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setCallback(context);
+    }
+
+    private void setCallback(Context context) {
+        try {
+            mCallback = (OnRecipeClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + "must implement OnRecipeClickListener");
+        }
+    }
+
+    public interface OnRecipeClickListener {
+        void onRecipeSelected(Recipe recipe);
     }
 
     @Nullable
@@ -102,6 +121,7 @@ public class RecipeListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Recipe recipe = (Recipe) view.getTag();
+                mCallback.onRecipeSelected(recipe);
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
                     arguments.putParcelable(RecipeDetailFragment.ARG_RECIPE, Parcels.wrap(recipe));
