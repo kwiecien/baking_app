@@ -17,6 +17,20 @@ public class MainActivity extends AppCompatActivity {
         Timber.plant(new Timber.DebugTree());
 
         setToolbar();
+        if (isInTwoPaneMode()) {
+            addRecipeDetailsFragment();
+        }
+    }
+
+    private void addRecipeDetailsFragment() {
+        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.recipe_detail_container, recipeDetailFragment)
+                .commit();
+    }
+
+    private boolean isInTwoPaneMode() {
+        return findViewById(R.id.recipe_detail_container) != null;
     }
 
     private void setToolbar() {
