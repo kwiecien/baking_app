@@ -1,7 +1,6 @@
 package com.kk.bakingapp.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,8 +22,6 @@ import com.kk.bakingapp.idle.SimpleIdlingResource;
 import com.kk.bakingapp.util.Drawables;
 import com.kk.bakingapp.util.Jsons;
 import com.kk.bakingapp.util.Recipes;
-
-import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -60,10 +57,6 @@ public class RecipeListFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "must implement OnRecipeClickListener");
         }
-    }
-
-    public interface OnRecipeClickListener {
-        void onRecipeSelected(Recipe recipe);
     }
 
     @Nullable
@@ -111,6 +104,10 @@ public class RecipeListFragment extends Fragment {
         return mIdlingResource;
     }
 
+    interface OnRecipeClickListener {
+        void onRecipeSelected(Recipe recipe);
+    }
+
     public static class RecipeRecyclerViewAdapter
             extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.RecipeViewHolder> {
 
@@ -122,22 +119,6 @@ public class RecipeListFragment extends Fragment {
             public void onClick(View view) {
                 Recipe recipe = (Recipe) view.getTag();
                 mCallback.onRecipeSelected(recipe);
-                if (mTwoPane) {
-                    Bundle arguments = new Bundle();
-                    arguments.putParcelable(RecipeDetailFragment.ARG_RECIPE, Parcels.wrap(recipe));
-                    arguments.putLong(RecipeDetailFragment.ARG_RECIPE_ID, recipe.getId());
-                    RecipeDetailFragment fragment = new RecipeDetailFragment();
-                    fragment.setArguments(arguments);
-                    mParentFragment.getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.recipe_detail_container, fragment)
-                            .commit();
-                } else {
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, RecipeDetailActivity.class);
-                    intent.putExtra(RecipeDetailFragment.ARG_RECIPE, Parcels.wrap(recipe));
-                    intent.putExtra(RecipeDetailFragment.ARG_RECIPE_ID, recipe.getId());
-                    context.startActivity(intent);
-                }
             }
         };
 
