@@ -57,7 +57,7 @@ public class RecipeDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_RECIPE)) {
+        if (getArguments() != null && getArguments().containsKey(ARG_RECIPE)) {
             mRecipe = Parcels.unwrap(getArguments().getParcelable(ARG_RECIPE));
         }
     }
