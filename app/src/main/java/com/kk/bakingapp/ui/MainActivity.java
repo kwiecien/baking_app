@@ -1,6 +1,7 @@
 package com.kk.bakingapp.ui;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +9,7 @@ import android.view.View;
 
 import com.kk.bakingapp.R;
 import com.kk.bakingapp.data.Recipe;
+import com.kk.bakingapp.databinding.ActivityMainBinding;
 
 import org.parceler.Parcels;
 
@@ -16,10 +18,12 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity
         implements RecipeListFragment.OnRecipeClickListener {
 
+    private ActivityMainBinding mBinding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         Timber.plant(new Timber.DebugTree());
 
         setToolbar();
@@ -63,6 +67,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showSelectedRecipe(Recipe recipe) {
+        mBinding.setRecipe(recipe);
         Bundle arguments = new Bundle();
         arguments.putParcelable(RecipeDetailFragment.ARG_RECIPE, Parcels.wrap(recipe));
         arguments.putLong(RecipeDetailFragment.ARG_RECIPE_ID, recipe.getId());
