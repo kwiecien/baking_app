@@ -31,14 +31,20 @@ public class MainActivity extends AppCompatActivity
         setToolbar();
         if (isInTwoPaneMode()) {
             addRecipeDetailsFragment();
+            showEmptyView();
         }
     }
 
     private void addRecipeDetailsFragment() {
         RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.recipe_detail_container, recipeDetailFragment)
+                .replace(R.id.recipe_detail_container, recipeDetailFragment)
                 .commit();
+    }
+
+    private void showEmptyView() {
+        findViewById(R.id.empty_view).setVisibility(View.VISIBLE);
+        findViewById(R.id.recipe_detail_with_title_ll).setVisibility(View.GONE);
     }
 
     private boolean isInTwoPaneMode() {
@@ -56,7 +62,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRecipeSelected(Recipe recipe) {
         if (isInTwoPaneMode()) {
-            showRecipeDetailFragment();
+            showRecipeDetailView();
             showSelectedRecipe(recipe);
             mBinding.getRecipeViewModel().setRecipe(recipe);
         } else {
@@ -64,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void showRecipeDetailFragment() {
+    private void showRecipeDetailView() {
         findViewById(R.id.empty_view).setVisibility(View.GONE);
         findViewById(R.id.recipe_detail_with_title_ll).setVisibility(View.VISIBLE);
     }

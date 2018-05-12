@@ -78,7 +78,7 @@ public class RecipeDetailFragment extends Fragment {
     private void setupToolbar() {
         CollapsingToolbarLayout appBarLayout = getActivity().findViewById(R.id.recipe_detail_toolbar_layout);
         ImageView mToolbarImageView = getActivity().findViewById(R.id.recipe_toolbar_iv);
-        if (appBarLayout != null) {
+        if (appBarLayout != null && mRecipe != null) {
             appBarLayout.setTitle(mRecipe.getName());
             mToolbarImageView.setImageResource(Drawables.getRecipeImageResource((int) mRecipe.getId() - 1));
         }

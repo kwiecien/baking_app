@@ -45,18 +45,18 @@ public class RecipeListFragment extends Fragment {
         // Mandatory empty constructor
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        setCallback(context);
-    }
-
-    private void setCallback(Context context) {
+    private static void setCallback(Context context) {
         try {
             mCallback = (OnRecipeClickListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "must implement OnRecipeClickListener");
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setCallback(context);
     }
 
     @Nullable
@@ -94,7 +94,7 @@ public class RecipeListFragment extends Fragment {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, @NonNull List<Recipe> recipes) {
-        recyclerView.setAdapter(new RecipeRecyclerViewAdapter(this, recipes, false));
+        recyclerView.setAdapter(new RecipeRecyclerViewAdapter(recipes));
     }
 
     public SimpleIdlingResource getIdlingResource() {
@@ -111,9 +111,7 @@ public class RecipeListFragment extends Fragment {
     public static class RecipeRecyclerViewAdapter
             extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.RecipeViewHolder> {
 
-        private final RecipeListFragment mParentFragment;
         private final List<Recipe> mRecipes;
-        private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,12 +120,8 @@ public class RecipeListFragment extends Fragment {
             }
         };
 
-        RecipeRecyclerViewAdapter(RecipeListFragment parent,
-                                  List<Recipe> items,
-                                  boolean twoPane) {
-            mRecipes = items;
-            mParentFragment = parent;
-            mTwoPane = twoPane;
+        RecipeRecyclerViewAdapter(List<Recipe> recipes) {
+            mRecipes = recipes;
         }
 
         @NonNull
