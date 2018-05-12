@@ -10,6 +10,7 @@ import android.view.View;
 import com.kk.bakingapp.R;
 import com.kk.bakingapp.data.Recipe;
 import com.kk.bakingapp.databinding.ActivityMainBinding;
+import com.kk.bakingapp.viewmodel.RecipeViewModel;
 
 import org.parceler.Parcels;
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mBinding.setRecipeViewModel(new RecipeViewModel(new Recipe()));
         Timber.plant(new Timber.DebugTree());
 
         setToolbar();
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity
         if (isInTwoPaneMode()) {
             showRecipeDetailFragment();
             showSelectedRecipe(recipe);
+            mBinding.getRecipeViewModel().setRecipe(recipe);
         } else {
             startRecipeDetailActivity(recipe);
         }
@@ -67,7 +70,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showSelectedRecipe(Recipe recipe) {
-        mBinding.setRecipe(recipe);
         Bundle arguments = new Bundle();
         arguments.putParcelable(RecipeDetailFragment.ARG_RECIPE, Parcels.wrap(recipe));
         arguments.putLong(RecipeDetailFragment.ARG_RECIPE_ID, recipe.getId());

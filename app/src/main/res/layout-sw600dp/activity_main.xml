@@ -4,8 +4,8 @@
 
     <data>
         <variable
-            name="recipe"
-            type="com.kk.bakingapp.data.Recipe" />
+            name="recipeViewModel"
+            type="com.kk.bakingapp.viewmodel.RecipeViewModel" />
     </data>
 
     <LinearLayout
@@ -39,14 +39,14 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="40dp"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/standard_padding"
-                    android:text="@{recipe.name}"
+                    android:text="@{recipeViewModel.name}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     tools:text="Nutella Pie" />
 

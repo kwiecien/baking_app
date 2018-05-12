@@ -1,8 +1,5 @@
 package com.kk.bakingapp.data;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
@@ -15,7 +12,7 @@ import lombok.ToString;
 @Parcel
 @ToString
 @Getter
-public class Recipe extends BaseObservable {
+public class Recipe {
 
     long id;
     String name;
@@ -35,11 +32,6 @@ public class Recipe extends BaseObservable {
         this.steps = steps;
         this.servings = servings;
         this.image = image;
-    }
-
-    @Bindable
-    public String getName() {
-        return name;
     }
 
     @Parcel
