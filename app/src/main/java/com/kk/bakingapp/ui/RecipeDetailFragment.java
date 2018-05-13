@@ -88,7 +88,7 @@ public class RecipeDetailFragment extends Fragment {
                 new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new IngredientsRecyclerViewAdapter(this, ingredients, false));
+        recyclerView.setAdapter(new IngredientsRecyclerViewAdapter(ingredients));
     }
 
     private void setupStepsRecyclerView(RecyclerView recyclerView, List<Recipe.Step> steps) {
@@ -97,18 +97,14 @@ public class RecipeDetailFragment extends Fragment {
                 new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.HORIZONTAL);
         recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new StepsRecyclerViewAdapter(this, steps, false));
+        recyclerView.setAdapter(new StepsRecyclerViewAdapter(steps));
     }
 
     private class IngredientsRecyclerViewAdapter extends RecyclerView.Adapter<IngredientsRecyclerViewAdapter.IngredientViewHolder> {
-        private final RecipeDetailFragment mRecipeDetailFragment; // TODO cleanup
         private final List<Ingredient> mIngredients;
-        private final boolean mTwoPane;
 
-        IngredientsRecyclerViewAdapter(RecipeDetailFragment recipeDetailFragment, List<Ingredient> ingredients, boolean twoPane) {
-            mRecipeDetailFragment = recipeDetailFragment;
+        IngredientsRecyclerViewAdapter(List<Ingredient> ingredients) {
             mIngredients = ingredients;
-            mTwoPane = twoPane;
         }
 
         @NonNull
@@ -148,9 +144,7 @@ public class RecipeDetailFragment extends Fragment {
     }
 
     private class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecyclerViewAdapter.StepViewHolder> {
-        private final RecipeDetailFragment mRecipeDetailFragment; // TODO cleanup
         private final List<Recipe.Step> mSteps;
-        private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,10 +157,8 @@ public class RecipeDetailFragment extends Fragment {
             }
         };
 
-        StepsRecyclerViewAdapter(RecipeDetailFragment recipeDetailFragment, List<Recipe.Step> steps, boolean twoPane) {
-            mRecipeDetailFragment = recipeDetailFragment;
+        StepsRecyclerViewAdapter(List<Recipe.Step> steps) {
             mSteps = steps;
-            mTwoPane = twoPane;
         }
 
         @NonNull
