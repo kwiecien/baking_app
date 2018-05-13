@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeBinding() {
-        mBinding.setRecipeViewModel(new RecipeViewModel(new Recipe()));
+        mBinding.setRecipeViewModel(new RecipeViewModel(mRecipe == null ? new Recipe() : mRecipe));
     }
 
     private void addRecipeDetailsFragment() {
