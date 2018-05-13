@@ -65,7 +65,11 @@ public class RecipeListFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
         ButterKnife.bind(this, rootView);
-        fetchRecipes(RECIPES_URL, getIdlingResource());
+        if (savedInstanceState == null) {
+            fetchRecipes(RECIPES_URL, getIdlingResource());
+        } else {
+            setupRecyclerView(mRecyclerView, Recipes.getRecipes());
+        }
         return rootView;
     }
 

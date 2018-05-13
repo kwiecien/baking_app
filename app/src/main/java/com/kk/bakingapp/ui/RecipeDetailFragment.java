@@ -36,7 +36,6 @@ import butterknife.ButterKnife;
 public class RecipeDetailFragment extends Fragment {
 
     public static final String ARG_RECIPE = "recipe";
-    public static final String ARG_RECIPE_ID = "recipe_id";
 
     @BindView(R.id.ingredients_rv)
     RecyclerView mIngredientsRecyclerView;
@@ -56,7 +55,6 @@ public class RecipeDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null && getArguments().containsKey(ARG_RECIPE)) {
             mRecipe = Parcels.unwrap(getArguments().getParcelable(ARG_RECIPE));
         }
@@ -103,7 +101,7 @@ public class RecipeDetailFragment extends Fragment {
     }
 
     private class IngredientsRecyclerViewAdapter extends RecyclerView.Adapter<IngredientsRecyclerViewAdapter.IngredientViewHolder> {
-        private final RecipeDetailFragment mRecipeDetailFragment;
+        private final RecipeDetailFragment mRecipeDetailFragment; // TODO cleanup
         private final List<Ingredient> mIngredients;
         private final boolean mTwoPane;
 
@@ -150,7 +148,7 @@ public class RecipeDetailFragment extends Fragment {
     }
 
     private class StepsRecyclerViewAdapter extends RecyclerView.Adapter<StepsRecyclerViewAdapter.StepViewHolder> {
-        private final RecipeDetailFragment mRecipeDetailFragment;
+        private final RecipeDetailFragment mRecipeDetailFragment; // TODO cleanup
         private final List<Recipe.Step> mSteps;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
