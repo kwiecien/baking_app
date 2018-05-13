@@ -24,15 +24,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        mBinding.setRecipeViewModel(new RecipeViewModel(new Recipe()));
         Timber.plant(new Timber.DebugTree());
 
         setToolbar();
         if (isInTwoPaneMode()) {
+            initializeBinding();
             addRecipeDetailsFragment();
             showEmptyView();
+        } else {
+            setContentView(R.layout.activity_main);
         }
+    }
+
+    private void initializeBinding() {
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mBinding.setRecipeViewModel(new RecipeViewModel(new Recipe()));
     }
 
     private void addRecipeDetailsFragment() {
