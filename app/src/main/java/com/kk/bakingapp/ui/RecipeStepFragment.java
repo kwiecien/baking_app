@@ -84,6 +84,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         if (getArguments().containsKey(ARG_RECIPE_STEP)) {
             mStep = Parcels.unwrap(getArguments().getParcelable(ARG_RECIPE_STEP));
             mRecipeId = getArguments().getLong(ARG_RECIPE_ID);
@@ -97,8 +98,8 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
         View rootView = inflater.inflate(R.layout.fragment_recipe_step, container, false);
         ButterKnife.bind(this, rootView);
         setupViews(mStep);
-        setupExoPlayer(mStep);
         setupListeners();
+        setupExoPlayer(mStep);
         return rootView;
     }
 
@@ -120,26 +121,29 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     }
 
     private void setupListeners() {
-        mNextStepButton.setOnClickListener(view -> {
-            mStep = mSteps.get((int) mStep.getId() + 1);
-            refreshUi(mStep);
-        });
-        mPreviousStepButton.setOnClickListener(view -> {
-            mStep = mSteps.get((int) mStep.getId() - 1);
-            refreshUi(mStep);
-        });
+        mNextStepButton.setOnClickListener(view -> goToStep(mSteps.get((int) mStep.getId() + 1)));
+        mPreviousStepButton.setOnClickListener(view -> goToStep(mSteps.get((int) mStep.getId() - 1)));
     }
 
-    private void refreshUi(Recipe.Step step) {
+    private void goToStep(Recipe.Step step) {
+        mStep = step;
         setupViews(step);
+        restartExoPlayer(step);
+    }
+
+    private void restartExoPlayer(Recipe.Step step) {
         releaseExoPlayer();
         setupExoPlayer(step);
     }
 
     private void setupExoPlayer(Recipe.Step step) {
-        mExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource((getResources()), R.drawable.question_mark));
-        initializeMediaSession();
-        initializeExoPlayer(Uri.parse(step.getVideoUrl()));
+        if (mMediaSession == null) {
+            initializeMediaSession();
+        }
+        if (mExoPlayer == null) {
+            initializeExoPlayer(Uri.parse(step.getVideoUrl()));
+        }
+        initializeExoPlayerView(mExoPlayer);
     }
 
     private void initializeMediaSession() {
@@ -166,7 +170,6 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
             DefaultTrackSelector trackSelector = new DefaultTrackSelector();
             DefaultLoadControl loadControl = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector, loadControl);
-            mExoPlayerView.setPlayer(mExoPlayer);
             mExoPlayer.addListener(this);
             String userAgent = Util.getUserAgent(getActivity(), "BakingApp");
             DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getActivity(), userAgent);
@@ -176,8 +179,14 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
                 mExoPlayer.prepare(extractorMediaSource);
             }
             mExoPlayer.setPlayWhenReady(true);
-            mExoPlayerView.hideController();
         }
+        initializeExoPlayerView(mExoPlayer);
+    }
+
+    private void initializeExoPlayerView(SimpleExoPlayer exoPlayer) {
+        mExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource((getResources()), R.drawable.question_mark));
+        mExoPlayerView.setPlayer(exoPlayer);
+        mExoPlayerView.hideController();
     }
 
     private void releaseExoPlayer() {
