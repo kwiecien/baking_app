@@ -35,8 +35,6 @@ import static org.hamcrest.core.Is.is;
 @RunWith(AndroidJUnit4.class)
 public class RecipeDetailActivityTest {
 
-    private Recipe mRecipe = createRecipe();
-
     @Rule
     public ActivityTestRule<RecipeDetailActivity> mActivityTestRule =
             new ActivityTestRule<RecipeDetailActivity>(RecipeDetailActivity.class) {
@@ -45,10 +43,11 @@ public class RecipeDetailActivityTest {
                     Intent intent = new Intent();
                     Recipe recipe = createRecipe();
                     intent.putExtra(RecipeDetailFragment.ARG_RECIPE, Parcels.wrap(recipe));
-                    intent.putExtra(RecipeDetailFragment.ARG_RECIPE_ID, recipe.getId());
                     return intent;
                 }
             };
+
+    private Recipe mRecipe = createRecipe();
 
     @Before
     public void addGlobalRecipes() {

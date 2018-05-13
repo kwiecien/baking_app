@@ -137,9 +137,7 @@ public class RecipeStepFragment extends Fragment implements ExoPlayer.EventListe
     }
 
     private void setupExoPlayer(Recipe.Step step) {
-        if (mMediaSession == null) {
-            initializeMediaSession();
-        }
+        initializeMediaSession();
         if (mExoPlayer == null) {
             initializeExoPlayer(Uri.parse(step.getVideoUrl()));
         }
