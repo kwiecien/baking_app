@@ -17,4 +17,12 @@
     <string name="recipe_ingredients">Recipe ingredients</string>
     <string name="refresh_to_see_a_new_recipe">Refresh to see a new recipe!</string>
     <string name="change_recipe">Change recipe</string>
+    <string name="recipe_toolbar_image">Recipe toolbar image</string>
+    <string name="previous_button">Previous button</string>
+    <string name="rewind_button">Rewind button</string>
+    <string name="play_button">Play button</string>
+    <string name="pause_button">Pause button</string>
+    <string name="fast_forward_button">Fast forward button</string>
+    <string name="recipe_image">Recipe image</string>
+    <string name="no_recipe_selected">No recipe selected</string>
 </resources>
